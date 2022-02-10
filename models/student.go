@@ -8,5 +8,3 @@ type Student struct {
 	CPG  string `json:"cpg"`
 	ID   string `json:"id"`
 }
-
-var Students []Student

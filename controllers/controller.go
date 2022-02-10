@@ -9,7 +9,11 @@ import (
 )
 
 func ShowAllStudents(c *gin.Context) {
-	c.JSON(200, models.Students)
+	var students []models.Student
+
+	database.DB.Find(&students)
+
+	c.JSON(200, students)
 }
 
 func Welcome(c *gin.Context) {
