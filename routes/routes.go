@@ -14,5 +14,7 @@ func HandleRequests() {
 
 	r.POST("/students", controllers.CreateNewStudent)
 
+	r.DELETE("/students/:id", controllers.DeleteStudent)
+
 	r.Run()
 }
