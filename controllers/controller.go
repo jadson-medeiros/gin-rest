@@ -89,3 +89,21 @@ func EditStudent(c *gin.Context) {
 
 	c.JSON(http.StatusOK, student)
 }
+
+func SearchStudentByCPG(c *gin.Context) {
+	var student models.Student
+
+	cpg := c.Param("cpg")
+
+	database.DB.Where(&models.Student{CPG: cpg}).First(&student)
+
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": "Student not found",
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, student)
+}
