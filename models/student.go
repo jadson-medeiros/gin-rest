@@ -6,5 +6,5 @@ type Student struct {
 	gorm.Model
 	Name string `json:"name"`
 	CPG  string `json:"cpg"`
-	ID   string `json:"id"`
+	//ID   string `json:"id"`
 }

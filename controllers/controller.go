@@ -46,5 +46,13 @@ func SearchStudentByID(c *gin.Context) {
 
 	database.DB.First(&student, id)
 
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": "Student not found",
+		})
+
+		return
+	}
+
 	c.JSON(http.StatusOK, student)
 }
