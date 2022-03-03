@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jadson-medeiros/gin-rest/controllers"
+	"github.com/stretchr/testify/assert"
 )
 
 func SetupTestRoutes() *gin.Engine {
@@ -26,8 +27,5 @@ func TestCheckStatusCodeWelcomeWithParams(t *testing.T) {
 
 	r.ServeHTTP(res, req)
 
-	if res.Code != http.StatusOK {
-		t.Fatalf("Status error: value recieve was %d but the expected were %d",
-			res.Code, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, res.Code, "should be equals")
 }
