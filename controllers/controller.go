@@ -20,7 +20,7 @@ func Welcome(c *gin.Context) {
 	name := c.Params.ByName("name")
 
 	c.JSON(200, gin.H{
-		"API:": "Hy " + name + ", welcome :D",
+		"API:": "Hi " + name + ", welcome :D",
 	})
 }
 

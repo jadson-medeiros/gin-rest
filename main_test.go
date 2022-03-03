@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -28,4 +29,10 @@ func TestCheckStatusCodeWelcomeWithParams(t *testing.T) {
 	r.ServeHTTP(res, req)
 
 	assert.Equal(t, http.StatusOK, res.Code, "should be equals")
+
+	mock := `{"API:":"Hi test, welcome :D"}`
+
+	resBody, _ := ioutil.ReadAll(res.Body)
+
+	assert.Equal(t, mock, string(resBody))
 }
