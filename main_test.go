@@ -16,6 +16,7 @@ import (
 var ID int
 
 func SetupTestRoutes() *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	routes := gin.Default()
 
 	return routes
@@ -67,6 +68,23 @@ func TestGetAllStudentesHandler(t *testing.T) {
 
 	res := httptest.NewRecorder()
 
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
+}
+
+func TestSearchStudentByCPGHandler(t *testing.T) {
+	database.ConnectionDB()
+
+	CreateStudentMock()
+	defer DeleteStudentMock()
+
+	r := SetupTestRoutes()
+	r.GET("/students/cpg/:cpg", controllers.SearchStudentByCPG)
+
+	req, _ := http.NewRequest("GET", "/students/cpg/12345678901", nil)
+
+	res := httptest.NewRecorder()
 	r.ServeHTTP(res, req)
 
 	assert.Equal(t, http.StatusOK, res.Code)
