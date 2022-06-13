@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -87,5 +89,31 @@ func TestSearchStudentByCPGHandler(t *testing.T) {
 	res := httptest.NewRecorder()
 	r.ServeHTTP(res, req)
 
+	assert.Equal(t, http.StatusOK, res.Code)
+}
+
+func TestSearchStudentByIDHandler(t *testing.T) {
+	database.ConnectionDB()
+
+	CreateStudentMock()
+	defer DeleteStudentMock()
+
+	r := SetupTestRoutes()
+	r.GET("/students/:id", controllers.SearchStudentByID)
+
+	path := "/students/" + strconv.Itoa(ID)
+	req, _ := http.NewRequest("GET", path, nil)
+
+	res := httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
+
+	var studentMock models.Student
+
+	json.Unmarshal(res.Body.Bytes(), &studentMock)
+
+	assert.Equal(t, "Test", studentMock.Name, "The names should match")
+	assert.Equal(t, "12345678901", studentMock.CPG)
 	assert.Equal(t, http.StatusOK, res.Code)
 }
