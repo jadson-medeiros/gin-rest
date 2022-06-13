@@ -117,3 +117,20 @@ func TestSearchStudentByIDHandler(t *testing.T) {
 	assert.Equal(t, "12345678901", studentMock.CPG)
 	assert.Equal(t, http.StatusOK, res.Code)
 }
+
+func TestDeleteStudentHandler(t *testing.T) {
+	database.ConnectionDB()
+
+	CreateStudentMock()
+
+	r := SetupTestRoutes()
+	r.DELETE("/students/:id", controllers.DeleteStudent)
+
+	path := "/students/" + strconv.Itoa(ID)
+	req, _ := http.NewRequest("DELETE", path, nil)
+
+	res := httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
+}
