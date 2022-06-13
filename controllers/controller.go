@@ -123,3 +123,13 @@ func SearchStudentByCPG(c *gin.Context) {
 
 	c.JSON(http.StatusOK, student)
 }
+
+func ShowIndexPage(c *gin.Context) {
+	var students models.Student
+
+	database.DB.Find(&students)
+
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"students": students,
+	})
+}
