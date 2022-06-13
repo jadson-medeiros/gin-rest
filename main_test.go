@@ -9,13 +9,28 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jadson-medeiros/gin-rest/controllers"
 	"github.com/jadson-medeiros/gin-rest/database"
+	"github.com/jadson-medeiros/gin-rest/models"
 	"github.com/stretchr/testify/assert"
 )
+
+var ID int
 
 func SetupTestRoutes() *gin.Engine {
 	routes := gin.Default()
 
 	return routes
+}
+
+func CreateStudentMock() {
+	student := models.Student{Name: "Test", CPG: "12345678901"}
+
+	database.DB.Create(&student)
+	ID = int(student.ID)
+}
+
+func DeleteStudentMock() {
+	var student models.Student
+	database.DB.Delete(&student, ID)
 }
 
 func TestCheckStatusCodeWelcomeWithParams(t *testing.T) {
@@ -40,6 +55,9 @@ func TestCheckStatusCodeWelcomeWithParams(t *testing.T) {
 
 func TestGetAllStudentesHandler(t *testing.T) {
 	database.ConnectionDB()
+
+	CreateStudentMock()
+	defer DeleteStudentMock()
 
 	r := SetupTestRoutes()
 
